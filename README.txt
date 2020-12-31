@@ -1,1 +1,1 @@
-This documents my ongoing understanding on simplicial complexes, Hodge Laplacians and parts of Hodge theory. Please expect it to contain inaccuracies\sidenote, errors and downright misapprehensions, and leave me feedback whenever appropriate.
+This documents my ongoing understanding on simplicial complexes, Hodge Laplacians and parts of Hodge theory. I'm learning this on my own, so please expect it to contain inaccuracies, errors and downright misapprehensions, and leave me feedback whenever appropriate.
