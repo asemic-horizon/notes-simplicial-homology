@@ -1,45 +1,27 @@
 \documentclass{tufte-handout}
-
-%\geometry{showframe}% for debugging purposes -- displays the margins
-
+\setcounter{secnumdepth}{1}
 \usepackage{amsmath}
-
-% Set up the images/graphics package
+\newtheorem{app}{Application}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+%\geometry{showframe}% for debugging purposes -- displays the margins
+% all kinds of defaults from the template provided by overleaf
+\usepackage{booktabs}
+\usepackage{units}
+\usepackage{fancyvrb}\fvset{fontsize=\normalsize}
+\usepackage{multicol}
 \usepackage{graphicx}
 \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
 \graphicspath{{graphics/}}
 
-\title{Notes on simplicial complex and differential forms}
+% my own math shortcuts
+\newcommand{\re}{\mathbb{R}}
+
+
+\title{Notes on stuff}
 \author[Diego Navarro}
-\date{}  % if the \date{} command is left out, the current date will be used
+\date{}  
 
-% The following package makes prettier tables.  We're all about the bling!
-\usepackage{booktabs}
-
-% The units package provides nice, non-stacked fractions and better spacing
-% for units.
-\usepackage{units}
-
-% The fancyvrb package lets us customize the formatting of verbatim
-% environments.  We use a slightly smaller font.
-\usepackage{fancyvrb}
-\fvset{fontsize=\normalsize}
-
-% Small sections of multiple columns
-\usepackage{multicol}
-
-% Provides paragraphs of dummy text
-\usepackage{lipsum}
-
-% These commands are used to pretty-print LaTeX commands
-\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
-\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
-\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
-\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
-\newcommand{\docenv}[1]{\textsf{#1}}% environment name
-\newcommand{\docpkg}[1]{\texttt{#1}}% package name
-\newcommand{\doccls}[1]{\texttt{#1}}% document class name
-\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
 
 \begin{document}
 
@@ -50,7 +32,58 @@
 \end{abstract}
 
 %\printclassoptions
-\section{Simplices}
+\section{Simplices in real spaces}
+
+\subsection{The standard 1-simplex}
+The standard 1-simplex\sidenote{`Simplices' is the plural form of `simplex': one simplex, two simplices, three simplices. I will forever be bothered by the fact that `complex' doesn't follow this pattern.} $\s_1$ is the set of pairs of positive real numbers $(x_1,x_2)$ such that $x_1+x_2=1$. My intuition for this is that a simplex is a ``budget'': the space of possible ways to allocate resources to two buckets. 
+
+Note that $s_1$ is one-dimensional despite being a subset of $\re^2$.  Since $x_1$ alone determines a point $(x_1,1-x_1)$ in the simplex, $s_1$ can be identified with the unit line segment $[0,1]$. To recover a two-dimensional picture, it's sufficient to project this line segment to either axis.
+\subsection{The standard 2-simplex}
+Likewise, the standard 2-simplex $s_2$ is the set of triples of positive real numbers $(x_1,x_2,x_3)$ such that $x_1+x_2+x_3=1$. This is clearly two-dimensional, as it can be projected on any pair of coordinates (either $(x_1,x_2)$ or $(x_1,x_3)$ or $(x_2,x_3)$. What does it look like as a subset of $\re^3? 
+
+If we hold $x_3$ constant at, for example, $0.1$, then we have that $x_1+x_2=0.9$. 
+Then $s_2$ can be viewed as the union of `scaled segments' for every possible value along the third coordinate:
+
+\begin{equation}
+    s_2 = \bigcup_{\alpha\in[0,1]} \{x_1+x_2 = 1-\alpha\} 
+\end{equation}
+
+the union of line segments interpolating points between $(0,\alpha,1-\alpha)$ and $(\alpha,0,1-\alpha)$. Looking at the first two coordinates only, this looks like a triangle bounded by $(0,1),(1,0)$ and the diagonal line between these vertices. By trilateral symmetry, this is also true for the other two pairs of coordinates; therefore $s_2$ must look like a (filled) triangle from every orthogonal perspective. Now, much like $s_1$ ca be identified with any of its two 1-dimensional projections, $s_2$ can be identified with an equilateral triangle\sidenote{This is actually exploited in data visualization to represent objects that have ingredients (like the NPK - nitrogen, phosphorus, potassium - composition of soils)}.
+\section{General $n$-simplices}
+More generally, the standard $n$-simplex is the subset of $\re^{n+1}$ such that
+\begin{equation}
+    s_n = x_1 + \cdots + x_{n+1} = 1, \quad \quad \quad\quad x_1, \cdots, x_{n+1} > 0
+\end{equation}
+
+Once again, this can be seen as the union
+
+\begin{equation}
+  s_n =  \bigcup_{\alpha \in [0,1]} \{x_1+\cdots+x_n = 1-\alpha\ |\ x_1,\ldots,x_n>0\}
+\end{equation}
+each term of which is a scaled-down version of $s_{n-1}$ until it becomes a single point (a vertex). As in the $n=2$ case, by $(n+1)$-lateral symmetry this happens in $n+1$ directions so there's $(n+1)$ vertices.
+\begin{exercise}
+What does a $3$-simplex look like? Can you visualize a $4$-simplex animating over one of the dimensions as ``time''?
+\end{exercise}
+
+For additional generality we can let simplices lie anywhere in real $n$-space; for example, a nonstandard 1-simplex will interpolate between two arbitrary vectors:
+
+\begin{equation}
+    s_{n}(u_1,\ldots,u_n) = \left\{\sum \theta_i u_i = 1\ |\  \theta_i>0; u_i\in \re^n \right\}
+\end{equation}
+
+As noted, standard simplices naturally represent data about composition (how much of a cake is saturated fats and sugars and so on). They can also represent the space of possible discrete probability distributions with $n$ outcomes: a binary random variable like a (possibly rigged) coin toss is usually specified by a single value $\text{Prob}(\text{heads})$, but this is because $\text{Prob}(\text{heads})+\text{Prob}(\text{tails})=1$. In other words, the space of all possible (in the general case rigged) coins\sidenote{A coin is a random variable.} is just $s_2$. 
+
+\begin{app}{Dirichlet priors} -- A particular coin (one that you can find in your trouser pockets) is an element of the 2-simples $s_2$. But how can we determine which element it is? One tactic is to throw it an infinite number of times until (by virtue of the Law of Large Numbers\sidenote{Exactly what it seems.}) it become a known quantity. Under more realistic circumstances, Bayesian statistics allows us to represent imperfect knowledge or uncertainty. The ``natural'' prior in this case is the Beta distribution, which takes values in $[0,1]=s_2$. More generally, the Dirichlet distribution is the prior distribution for a discrete random variable with arbitary $n$ outcomes. The range of possible values for such a Dirichlet is the $n$-simplex; in other words, sampling from this distribution generates points in the $n$-simplex.
+\end{app}
+\begin{app}{Aitchison geometry} -- Simplices are not vector spaces under Euclidean geometry: $u=(0.8,0.1,0.1), v = (0.6,0.2,0.2)$ are both elements of $s_3$, but $u+v$ is not. But the standard operations $+,\cdot$ can be replaced by alternate $\oplus,\odot$ so that the vector space laws apply:
+\[
+x\oplus y = \begin{pmatrix}\frac{x_1 y_1}{\sum x_i y_i} & \cdots & \frac{x_n y_n}{\sum x_i y_i}\end{pmatrix}
+\]
+\[
+\alpha \odot x = \begin{pmatrix}\frac{x_1^\alpha}{\sum x_i^\alpha} & \cdots & \frac{x_n^\alpha}{\sum x_i^\alpha} \end{pmatrix}
+\]
+\end{app}
+\section{Abstract simplices}
 
 \section{Simplicial complexes}
 
