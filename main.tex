@@ -1,0 +1,66 @@
+\documentclass{tufte-handout}
+
+%\geometry{showframe}% for debugging purposes -- displays the margins
+
+\usepackage{amsmath}
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+\title{Notes on simplicial complex and differential forms}
+\author[Diego Navarro}
+\date{}  % if the \date{} command is left out, the current date will be used
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Provides paragraphs of dummy text
+\usepackage{lipsum}
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+\begin{document}
+
+\maketitle% this prints the handout title, author, and date
+
+\begin{abstract}
+\noindent This documents my ongoing understanding on simplicial complexes, Hodge Laplacians and parts of Hodge theory. Please expect it to contain inaccuracies\sidenote{Visual layout has rhetorical value, and the use of \LaTeX in particular conveys a kind of rigor and certainty that's not always there -- at least not in my case. Indeed the very choice of authoring language and layout tooling can be read as pedantry, but I'd prefer you to think of it as aspirational.}, errors and downright misapprehensions, and leave me feedback whenever appropriate. 
+\end{abstract}
+
+%\printclassoptions
+\section{Simplices}
+
+\section{Simplicial complexes}
+
+\section{Homology, cohomology}
+
+\section{Connections with Hodge theory}
+\nocite{*}
+\bibliography{refs}
+\bibliographystyle{siam}
+
+
+
+\end{document}
