@@ -4,6 +4,7 @@
 \newtheorem{app}{Application}
 \newtheorem{example}{Example}
 \newtheorem{exercise}{Exercise}
+\newcommand{\define}{\textsc}
 %\geometry{showframe}% for debugging purposes -- displays the margins
 % all kinds of defaults from the template provided by overleaf
 \usepackage{booktabs}
@@ -35,58 +36,94 @@
 \section{Simplices in real spaces}
 
 \subsection{The standard 1-simplex}
-The standard 1-simplex\sidenote{`Simplices' is the plural form of `simplex': one simplex, two simplices, three simplices. I will forever be bothered by the fact that `complex' doesn't follow this pattern.} $\s_1$ is the set of pairs of positive real numbers $(x_1,x_2)$ such that $x_1+x_2=1$. My intuition for this is that a simplex is a ``budget'': the space of possible ways to allocate resources to two buckets. 
+The standard 0-simplex is a real number $x_1\in[0,1]$.
 
-Note that $s_1$ is one-dimensional despite being a subset of $\re^2$.  Since $x_1$ alone determines a point $(x_1,1-x_1)$ in the simplex, $s_1$ can be identified with the unit line segment $[0,1]$. To recover a two-dimensional picture, it's sufficient to project this line segment to either axis.
-\subsection{The standard 2-simplex}
-Likewise, the standard 2-simplex $s_2$ is the set of triples of positive real numbers $(x_1,x_2,x_3)$ such that $x_1+x_2+x_3=1$. This is clearly two-dimensional, as it can be projected on any pair of coordinates (either $(x_1,x_2)$ or $(x_1,x_3)$ or $(x_2,x_3)$. What does it look like as a subset of $\re^3? 
-
-If we hold $x_3$ constant at, for example, $0.1$, then we have that $x_1+x_2=0.9$. 
-Then $s_2$ can be viewed as the union of `scaled segments' for every possible value along the third coordinate:
-
+The standard 1-simplex\marginnote{`Simplices' is the plural form of `simplex': one simplex, two simplices, three simplices.} $S_1$ is the set of pairs of positive real numbers $(x_1,x_2)$ such that $x_1+x_2=1$. If the pair $(x_1, x_2)$ is seen as an element of $\re^2$, this means the 1-simplex is the segment of the graph for $y=1-x$ where both $x,y$ are positive. A more verbose definition follows:
 \begin{equation}
-    s_2 = \bigcup_{\alpha\in[0,1]} \{x_1+x_2 = 1-\alpha\} 
+    S_1 := \{(x_1,x_2)\ |\ x_1+x_2=1, x_1>0, x_2>0\}
 \end{equation}
 
-the union of line segments interpolating points between $(0,\alpha,1-\alpha)$ and $(\alpha,0,1-\alpha)$. Looking at the first two coordinates only, this looks like a triangle bounded by $(0,1),(1,0)$ and the diagonal line between these vertices. By trilateral symmetry, this is also true for the other two pairs of coordinates; therefore $s_2$ must look like a (filled) triangle from every orthogonal perspective. Now, much like $s_1$ ca be identified with any of its two 1-dimensional projections, $s_2$ can be identified with an equilateral triangle\sidenote{This is actually exploited in data visualization to represent objects that have ingredients (like the NPK - nitrogen, phosphorus, potassium - composition of soils)}.
-\section{General $n$-simplices}
-More generally, the standard $n$-simplex is the subset of $\re^{n+1}$ such that
+\marginnote{My intuition for the 1-simplex is a ``budget'': the space of possible ways to allocate resources to two buckets} From this equation it follows that $0\leq x_1, x_2\leq 1$. Then we can equivalently define 
 \begin{equation}
-    s_n = x_1 + \cdots + x_{n+1} = 1, \quad \quad \quad\quad x_1, \cdots, x_{n+1} > 0
+    S_1 = \bigcup_{\alpha\in [0,1]} \{{(x_1,\alpha)}\ |\ x_1 = 1-\alpha]\}
+\label{union-1}
+\end{equation}
+This definition makes it clearer that, despite being originally identified as a pair of numbers, $S_1$ is 1-dimensional and bijectively identified with the unit interval $[0,1]$. 
+
+Note that the symmetry in $x_1+x_2=1$ means we could have swapped the order (or labels) of summands and taking unions over pairs like $(\alpha,x_2)$ would yield the same set. Visually we can imagine an animation that sweeps the vertical axis and records the points where $x=1-y$, or one that sweeps over the horizontal axis and records the points where $y=1-x$.\marginnote{This is overthinking for the 1-simplex but helps me see the 2- and specially the 3-simplex.}
+
+Note, finally, that the issue of length is more or less arbitrary: we could easily define scaled $1$-simplices corresponding to line segments of length $c>0$
+\[
+c * S_1 = \{x_1 + x_2 = c\ |\ x_1,x_2>0\}
+\]
+This is basically useful only to visualize the 2- and 3-simplex, so don't hang on to it too tightly.
+
+\subsection{The standard 2-simplex}
+The standard 2-simplex $S_2$ is the set of triples of positive real numbers $(x_1,x_2,x_3)$ such that $x_1+x_2+x_3=1$. Choosing the the third coordinate to range over, this means
+
+\begin{equation}
+    S_2 =  \bigcup_{\alpha\in[0,1]} \{(x_1,x_2,\alpha)\ |\ (x_1,x_2)\in (1-\alpha)*S_1\}
+    \label{union-view-2}
+\end{equation}
+This is a union of line segments with lengths ranging from from an unit segment to a single point at $(0,0,1)$. We call the latter a \define{vertex}. Again, by trilateral symmetry $(1,0,0)$ and $(0,1,0)$ must also be vertices; and since we could have chosen to taken unions over pairs like $(x_1, \alpha,x_3)$ or $(\alpha,x_2,x_3)$, two additional unit segments must exist. If the 2-simplex is seen as embedded in $\re^3$, these must correspond to the line segments (\define{edges})
+\begin{align*}
+\{(x_1,1-x_1,0)\ &|\  x_1\in[0,1]\}\\
+\{(0,x_2,1-x_2)\ &|\ x_2 \in[0,1]\}\\
+\{(1-x_3,0,x_3)\ &|\ x_3\in[0,1]\}
+\end{align*}
+
+each of which is a 3D rotation of the 1-simplex $S_1$ to make the vertices touch. Again by trilateral symmetry, to each of these edges corresponds a range of shrinking segments filling the space until the next vertex. ``Forgetting'' any one of these three coordinates, we project a triangle in one of the three planes that intersect at the origin. This triangle must be equilateral\sidenote{This is actually exploited in data visualization to represent objects that have ingredients (like the NPK - nitrogen, phosphorus, potassium - composition of soils)}, since all edges are unit-length.
+\subsection{n-simplices}
+Generalizing the reasoning above, the standard $n$-simplex is the following $\re^{n+1}$:
+\begin{equation}
+    S_n = \{x_1 + \cdots + x_{n+1} = 1\ |\  x_1, \cdots, x_{n+1} \geq 0 \}the 
+    \label{standard-simplex}
 \end{equation}
 
 Once again, this can be seen as the union
 
 \begin{equation}
-  s_n =  \bigcup_{\alpha \in [0,1]} \{x_1+\cdots+x_n = 1-\alpha\ |\ x_1,\ldots,x_n>0\}
+  S_n =  \bigcup_{\alpha \in [0,1]} \{x_1+\cdots+x_n = 1-\alpha\ |\ x_1,\ldots,x_n>0\},
 \end{equation}
-each term of which is a scaled-down version of $s_{n-1}$ until it becomes a single point (a vertex). As in the $n=2$ case, by $(n+1)$-lateral symmetry this happens in $n+1$ directions so there's $(n+1)$ vertices.
+and since each element is a scaled $(n-1)$-simplex, this is again equivalent to 
+\begin{equation}
+    S_n = \bigcup_{\alpha\in[0,1]} \{(x_1,\cdots,x_n,\alpha) | \ \{(x_1,\cdots,x_n,\alpha)\in (1-\alpha)*S_{n-1}  \}
+\end{equation}
 \begin{exercise}
-What does a $3$-simplex look like? Can you visualize a $4$-simplex animating over one of the dimensions as ``time''?
+What does a $3$-simplex look like?
 \end{exercise}
-
-For additional generality we can let simplices lie anywhere in real $n$-space; for example, a nonstandard 1-simplex will interpolate between two arbitrary vectors:
+\subsection{General $n$-simplices}
+For additional generality we can let simplices lie anywhere in real $n$-space as follows:
 
 \begin{equation}
-    s_{n}(u_1,\ldots,u_n) = \left\{\sum \theta_i u_i = 1\ |\  \theta_i>0; u_i\in \re^n \right\}
+    S_{n}(u_1,\ldots,u_{n+1}) = \left\{\sum_{i=1}^{n+1} \theta_i u_i = 1\ |\  \theta_i>0; u_i\in \re^{n+1} \right\}
+    \label{geometric-simplex}
 \end{equation}
 
-As noted, standard simplices naturally represent data about composition (how much of a cake is saturated fats and sugars and so on). They can also represent the space of possible discrete probability distributions with $n$ outcomes: a binary random variable like a (possibly rigged) coin toss is usually specified by a single value $\text{Prob}(\text{heads})$, but this is because $\text{Prob}(\text{heads})+\text{Prob}(\text{tails})=1$. In other words, the space of all possible (in the general case rigged) coins\sidenote{A coin is a random variable.} is just $s_2$. 
 
-\begin{app}{Dirichlet priors} -- A particular coin (one that you can find in your trouser pockets) is an element of the 2-simples $s_2$. But how can we determine which element it is? One tactic is to throw it an infinite number of times until (by virtue of the Law of Large Numbers\sidenote{Exactly what it seems.}) it become a known quantity. Under more realistic circumstances, Bayesian statistics allows us to represent imperfect knowledge or uncertainty. The ``natural'' prior in this case is the Beta distribution, which takes values in $[0,1]=s_2$. More generally, the Dirichlet distribution is the prior distribution for a discrete random variable with arbitary $n$ outcomes. The range of possible values for such a Dirichlet is the $n$-simplex; in other words, sampling from this distribution generates points in the $n$-simplex.
-\end{app}
-\begin{app}{Aitchison geometry} -- Simplices are not vector spaces under Euclidean geometry: $u=(0.8,0.1,0.1), v = (0.6,0.2,0.2)$ are both elements of $s_3$, but $u+v$ is not. But the standard operations $+,\cdot$ can be replaced by alternate $\oplus,\odot$ so that the vector space laws apply:
-\[
-x\oplus y = \begin{pmatrix}\frac{x_1 y_1}{\sum x_i y_i} & \cdots & \frac{x_n y_n}{\sum x_i y_i}\end{pmatrix}
-\]
-\[
-\alpha \odot x = \begin{pmatrix}\frac{x_1^\alpha}{\sum x_i^\alpha} & \cdots & \frac{x_n^\alpha}{\sum x_i^\alpha} \end{pmatrix}
-\]
-\end{app}
-\section{Abstract simplices}
+where $u_1,\ldots,u_{n+1}$ are the \emph{vertices}. The standard simplices are, of course, general simplices whose vertices are the canonical base vectors $e_1=(1,0,\cdots),e_2=(0,1,0,\cdots),\ldots$. This is easier to see if we let $\Theta=(\theta_i), U = (u_{i,.})$  be a vector of coefficients ans a matrix of vertices as columns so that
 
+\begin{equation}
+    U\Theta= 1
+\end{equation}
+In the case where $U$ is the matrix with the canonical base vectors, this is clearly true and $\theta_1,\cdots$ take the role $x_1, \cdots$ had previously.
+Furthermore, the vertices must in the general case be linearly independent; thus $U^{-1}$ exists and takes the general simplex to its standard counterpart.
+% As noted, standard simplices naturally represent data about composition (how much of a cake is saturated fats and sugars and so on). They can also represent the space of possible discrete probability distributions with $n$ outcomes: a binary random variable like a (possibly rigged) coin toss is usually specified by a single value $\text{Prob}(\text{heads})$, but this is because $\text{Prob}(\text{heads})+\text{Prob}(\text{tails})=1$. In other words, the space of all possible (in the general case rigged) coins\sidenote{A coin is a random variable.} is just $S_2$. 
+
+% \begin{app}{Dirichlet priors} -- A particular coin (one that you can find in your trouser pockets) is an element of the 2-simplex $S_2$. The natural Bayesian prior in this case is the Beta distribution, which takes values in $[0,1]=S_2$. More generally, the Dirichlet distribution is the prior distribution for a discrete random variable with arbitary $n$ outcomes. The range of possible values for such a Dirichlet is the $n$-simplex; in other words, sampling from this distribution generates points in the $n$-simplex.
+% \end{app}
+% \begin{app}{Aitchison geometry} -- Simplices are not vector spaces under Euclidean geometry: $u=(0.8,0.1,0.1), v = (0.6,0.2,0.2)$ are both elements of $S_3$, but $u+v$ is not. But the standard operations $+,\cdot$ can be replaced by alternate $\oplus,\odot$ so that the vector space laws apply:
+% \[
+% x\oplus y = \begin{bmatrix}{x_1 y_1}/{\sum x_i y_i} & \cdots & {x_n y_n}/{\sum x_i y_i}\end{bmatrix}
+% \]
+% \[
+% \alpha \odot x = \begin{bmatrix}{x_1^\alpha}/{\sum x_i^\alpha} & \cdots & {x_n^\alpha}/{\sum x_i^\alpha} \end{bmatrix}
+% \]
+% \end{app}
+ 
 \section{Simplicial complexes}
-
+\subsection{Abstract simplices}
+Given the definition (\ref{geometric-simplex}) $n$-simplex can be fully be specified\sidenote{But not fully \emph{identified}; a triangle is still distinct from its vertices or even its edges.} by its $(n+1)$ vertices, each a vector of $\re^{n+1}$. 
 \section{Homology, cohomology}
 
 \section{Connections with Hodge theory}
