@@ -29,7 +29,7 @@
 \maketitle% this prints the handout title, author, and date
 
 \begin{abstract}
-\noindent This documents my ongoing understanding on simplicial complexes, Hodge Laplacians and other stuff. Please expect it to contain inaccuracies\sidenote{Visual layout has rhetorical value, and the use of \LaTeX in particular conveys a kind of rigor and certainty that's not always there -- at least not in my case. Indeed the very choice of authoring language and layout tooling can be read as pedantry, but I'd prefer you to think of it as aspirational.}, errors and downright misapprehensions, and leave me feedback whenever appropriate. 
+\noindent This is a chatty introduction to simplicial complexes and related themes.  Please expect it to contain errors and leave me feedback whenever appropriate. 
 \end{abstract}
 
 %\printclassoptions
@@ -60,10 +60,9 @@ This definition makes it clearer that, despite being originally identified as a 
 
 Note that the symmetry in $x_1+x_2=1$ means we could have swapped the order (or labels) of summands, taking unions over pairs like $(\alpha,x_2)$ would yield the same set. Visually we can imagine an animation that sweeps the vertical axis and records the points where $x=1-y$, or one that sweeps over the horizontal axis and records the points where $y=1-x$.\marginnote{This is overthinking for the 1-simplex but helps me see the 2- and especially the 3-simplex.}
 
-Note, finally, that the issue of length is more or less arbitrary: we could easily define scaled $1$-simplices corresponding to line segments of length $c>0$
-\marginnote{$(a_i)_u^v=\{a_u, a_{u+1},\ldots, u_{v-1},u_v\}$ is a notation for subsequence ranges that sometimes visually compacts things, hopefully not at the cost of obscurity.}
+Note, finally, that the issue of length is more or less arbitrary: we could easily define scaled $1$-simplices corresponding to line segments of length $c>0$: 
 {\[
-c * S_n = \left\{(x_i)_{i=1}^{n+1}\ \left| \sum_{i=1}^{n+1} x_i = c\right., x_i > 0 \text{ for each } i=1..n\right\}
+c * S_n = \left\{(x_1,\dots,x_{n+1})\ \left| \sum_{i=1}^{n+1} x_i = c\right., x_i > 0 \text{ for each } i=1\dots n\right\}
 \]
 
 This is basically useful only to visualize the 2- and 3-simplex, so don't hang on to it too tightly.
@@ -109,7 +108,7 @@ For additional generality we can let simplices lie anywhere in real $n$-space as
 where $u_1,\ldots,u_{n+1}$ are linearly independent vectors. 
 
 \begin{exercise}
-Show that standard simplices are simplices in this more general sense. Hint: somehow rewrite the sum in (\ref{geometric-simplex}) in terms of vectors and matrix.
+Show that standard simplices are simplices in this more general sense. Hint: somehow rewrite the sum in (\ref{geometric-simplex}) in terms of vectors and matrices.
 \end{exercise}
 \begin{exercise}
 Can the standard $S_n$ be recovered from any $S_n(u_1,\cdots,u_{n+1})$? How?
@@ -139,7 +138,7 @@ Can the standard $S_n$ be recovered from any $S_n(u_1,\cdots,u_{n+1})$? How?
 \renewcommand{\sc}{\mathcal C}
 Let $\ve$ be a finite set. The elements of $\ve$ are called \define{vertices}. An abstract $k$-simplex $\se$ is a subset of $\ve$ with $k+1$ elements. For example, $\ve$ is a set of people, 1-simplices can represent couples while 2-simplices represent three-person cliques. ($0$-simplices are one-element sets that we will also call vertices.)
 
-Since $\ve$ is finite, its elements can be bijectively identified with the natural numbers $\{1,2,\cdots,\}$. For short, we can further write a 1-simplex $\{1,2}\}$ as $[12]$, and generally a $k$-simplex $\{u,v,w,\ldots,z\}$ as $[uvw\ldots z]$ 
+Since $\ve$ is finite, its elements can be bijectively identified with the natural numbers $\{1,2,\cdots,\}$. For visual clarity when reading, we can further write a 1-simplex $\{1,2}\}$ as $[12]$, and generally a $k$-simplex $\{u,v,w,\ldots,z\}$ as $[uvw\ldots z]$ 
 
 \begin{exercise}
 What must $\ve$ be so that simplices in real space correspond to abstract simplices?
@@ -149,7 +148,7 @@ A simplicial complex (SC)  is a set of abstract simplices $\sc=\{\se_1,\se_2,\ld
 
 \subsection{Graphs}
 \newcommand{\maxdim}{\mathrm{max }\dim}
-The following is not standard in classic treatments, but let $$\maxdim\ \sc := \max_{\se \in \sc} |\se|$$
+The following definition is not standard in classic treatments, but let $$\maxdim\ \sc := \max_{\se \in \sc} |\se|$$
 (where $|X|$ is the number of elements in a finite set $X$).
 
 A SC $\sc$ with $\maxdim \sc = 1$ is a \define{graph}.\marginnote{The whole goal of Section 1 was to build the intuition of how exactly simplices are $n$-dimensional triangles; however, we need to let go of the idea that these sets are embedded in a higher-dimensional ``space''. Instead, we're \emph{building} ``spaces'' by gluing simplices.} The idea is here is that if $[uv]$ is a line segment in $\sc$, then its ``endpoints'' $u$ and $v$ must also be in $\sc$ (due to how a SC is defined). 
@@ -166,9 +165,9 @@ despite being somewhat related: $\sc_1$ is a graph with three points and three e
 
 This idea can be formalized (without handwaving invocations of geometric realizations) by the \textsc{clique complex}. In graph theory, a \textsc{clique} is a complete subgraph: a subset of a graph such that all of the vertices are connected. 
 
-More exhaustively,  let  $\mathcal V$ be a set of vertices: its ``clique graph''\sidenote{More commonly called the ``complete'' graph} $(\mathcal V, \mathcal E)$is obtained by attaching an edge set $\mathcal E$ containing all distinct pairs $\{u,v)\ | u\in \mathcal V, v \in \mathcal V, u\neq v\}$. A clique of a graph $(\mathcal G, \mathcal E)$ is simply a subgraph\sidenote{A subgraph is $(V',E'), V'\subset \mathcal V$ with  E'\subset \mathcal E$} that is the clique graph of its vertices $V'$. 
+More exhaustively,  let  $\mathcal V$ be a set of vertices: its ``clique graph''\sidenote{More commonly called the ``complete'' graph} $(\mathcal V, \mathcal E)$is obtained by attaching an edge set $\mathcal E$ containing all distinct pairs $\{u,v)\ | u\in \mathcal V, v \in \mathcal V, u\neq v\}$. A clique of a graph $(\mathcal G, \mathcal E)$ is simply a subgraph\sidenote{A subgraph is $(V',E'), V'\subset \mathcal V$ with  $E'\subset \mathcal E$} that is the clique graph of its vertices $V'$. 
 
-While a clique graph is built from vertices, the clique complex is a SC built from a graph: besides the 0- (vertices) and 1-(simplices) present in the original graph, a higher-dimensional simplex is added for each clique. For example, if $\sc_1$ is seen as a graph, then the $\{[12],[23],[13]\}$ is a clique (all pairs of the vertices seen are present); therefore, we add the 2-simplex $[123]$. 
+While a clique graph is built from vertices, the clique complex is a SC built from a graph: besides the 0- (vertices) and 1-(simplices) present in the original graph, a higher-dimensional simplex is added for each clique. For example, if $\sc_1$ is seen as a graph, then  $\{[12],[23],[13]\}$ is a clique (all pairs of the vertices seen are present); therefore, we add the 2-simplex $[123]$. 
 
 
 \section{Faces and cofaces}
@@ -191,7 +190,9 @@ Consider the set $\mathcal X$ that has one $k$-simplex, its faces, the faces of 
 A dual concept is that of \define{cofaces}. Whereas faces are defined for simplices in isolation, a coface of a simplex $\se$ is a simplex $\se'$ that has $\se$ as a face. This implies an ambient universe of possible simplices where we can look for one with this property; simplicial complexes are the natural candidate, since the faces of any simplex $\se'\in \sc$ must also belong to $\sc$. 
 
 For example, $[12]$ and $[13]$ are faces of $[123]$. This corresponds to the geometric intuition that these edges form the outlines of a $2$-simplex.
-
+\begin{exercise}
+Can the clique complex be defined in terms of cofaces?
+\end{exercise}
 
 
 \subsection{Adjacency}
