@@ -29,35 +29,45 @@
 \maketitle% this prints the handout title, author, and date
 
 \begin{abstract}
-\noindent This documents my ongoing understanding on simplicial complexes, Hodge Laplacians and parts of Hodge theory. Please expect it to contain inaccuracies\sidenote{Visual layout has rhetorical value, and the use of \LaTeX in particular conveys a kind of rigor and certainty that's not always there -- at least not in my case. Indeed the very choice of authoring language and layout tooling can be read as pedantry, but I'd prefer you to think of it as aspirational.}, errors and downright misapprehensions, and leave me feedback whenever appropriate. 
+\noindent This documents my ongoing understanding on simplicial complexes, Hodge Laplacians and other stuff. Please expect it to contain inaccuracies\sidenote{Visual layout has rhetorical value, and the use of \LaTeX in particular conveys a kind of rigor and certainty that's not always there -- at least not in my case. Indeed the very choice of authoring language and layout tooling can be read as pedantry, but I'd prefer you to think of it as aspirational.}, errors and downright misapprehensions, and leave me feedback whenever appropriate. 
 \end{abstract}
 
 %\printclassoptions
 \section{Simplices in real spaces}
 
 \subsection{The standard 1-simplex}
-The standard 0-simplex is a real number $x_1\in[0,1]$.
+The standard 0-simplex $S_0$ is a real number $x_1\in[0,1]$.
 
 The standard 1-simplex\marginnote{`Simplices' is the plural form of `simplex': one simplex, two simplices, three simplices.} $S_1$ is the set of pairs of positive real numbers $(x_1,x_2)$ such that $x_1+x_2=1$. If the pair $(x_1, x_2)$ is seen as an element of $\re^2$, this means the 1-simplex is the segment of the graph for $y=1-x$ where both $x,y$ are positive. A more verbose definition follows:
 \begin{equation}
     S_1 := \{(x_1,x_2)\ |\ x_1+x_2=1, x_1>0, x_2>0\}
+\label{standard-s1}
 \end{equation}
+\marginnote{My intuition for the 1-simplex is a ``budget'': the space of possible ways to allocate resources to two buckets}
+More generally, the standard $n$-simplex is given by
 
-\marginnote{My intuition for the 1-simplex is a ``budget'': the space of possible ways to allocate resources to two buckets} From this equation it follows that $0\leq x_1, x_2\leq 1$. Then we can equivalently define 
+\begin{equation}
+    S_n := \left\{(x_1,\ldots,x_{n+1})\ |\ \sum_{i=1}^{n+1} x_i = 1, x_1,...,x_n >0 \right\}
+\label{standard-sn}
+\end{equation}
+but I want to give some attention to $S_1$ first.
+Note that from expression (\ref{standard-s1}) and the fact that $x_1,x_2$ are all positive, it follows that $x_1,x_2$ are each restricted to the unit interval $[0,1]$ Then we can equivalently define $S_1$ as
 \begin{equation}
     S_1 = \bigcup_{\alpha\in [0,1]} \{{(x_1,\alpha)}\ |\ x_1 = 1-\alpha]\}
 \label{union-1}
 \end{equation}
-This definition makes it clearer that, despite being originally identified as a pair of numbers, $S_1$ is 1-dimensional and bijectively identified with the unit interval $[0,1]$. 
+This definition makes it clearer that, despite being originally identified as a pair of numbers in the unit interval, $S_1$ is actually tiny 1-dimensional subset of $[0,1]\times[0,1]$ which can be bijectively identified with the unit interval $[0,1]$. 
 
-Note that the symmetry in $x_1+x_2=1$ means we could have swapped the order (or labels) of summands and taking unions over pairs like $(\alpha,x_2)$ would yield the same set. Visually we can imagine an animation that sweeps the vertical axis and records the points where $x=1-y$, or one that sweeps over the horizontal axis and records the points where $y=1-x$.\marginnote{This is overthinking for the 1-simplex but helps me see the 2- and specially the 3-simplex.}
+Note that the symmetry in $x_1+x_2=1$ means we could have swapped the order (or labels) of summands, taking unions over pairs like $(\alpha,x_2)$ would yield the same set. Visually we can imagine an animation that sweeps the vertical axis and records the points where $x=1-y$, or one that sweeps over the horizontal axis and records the points where $y=1-x$.\marginnote{This is overthinking for the 1-simplex but helps me see the 2- and especially the 3-simplex.}
 
 Note, finally, that the issue of length is more or less arbitrary: we could easily define scaled $1$-simplices corresponding to line segments of length $c>0$
-\[
-c * S_1 = \{x_1 + x_2 = c\ |\ x_1,x_2>0\}
+\marginnote{$(a_i)_u^v=\{a_u, a_{u+1},\ldots, u_{v-1},u_v\}$ is a notation for subsequence ranges that sometimes visually compacts things, hopefully not at the cost of obscurity.}
+{\[
+c * S_n = \left\{(x_i)_{i=1}^{n+1}\ \left| \sum_{i=1}^{n+1} x_i = c\right., x_i > 0 \text{ for each } i=1..n\right\}
 \]
-This is basically useful only to visualize the 2- and 3-simplex, so don't hang on to it too tightly.
 
+This is basically useful only to visualize the 2- and 3-simplex, so don't hang on to it too tightly.
+}
 \subsection{The standard 2-simplex}
 The standard 2-simplex $S_2$ is the set of triples of positive real numbers $(x_1,x_2,x_3)$ such that $x_1+x_2+x_3=1$. Choosing the the third coordinate to range over, this means
 
@@ -72,25 +82,21 @@ This is a union of line segments with lengths ranging from from an unit segment 
 \{(1-x_3,0,x_3)\ &|\ x_3\in[0,1]\}
 \end{align*}
 
-each of which is a 3D rotation of the 1-simplex $S_1$ to make the vertices touch. Again by trilateral symmetry, to each of these edges corresponds a range of shrinking segments filling the space until the next vertex. ``Forgetting'' any one of these three coordinates, we project a triangle in one of the three planes that intersect at the origin. This triangle must be equilateral\sidenote{This is actually exploited in data visualization to represent objects that have ingredients (like the NPK - nitrogen, phosphorus, potassium - composition of soils)}, since all edges are unit-length.
-\subsection{n-simplices}
-Generalizing the reasoning above, the standard $n$-simplex is the following $\re^{n+1}$:
-\begin{equation}
-    S_n = \{x_1 + \cdots + x_{n+1} = 1\ |\  x_1, \cdots, x_{n+1} \geq 0 \}the 
-    \label{standard-simplex}
-\end{equation}
+each of which is a 3D rotation of the 1-simplex $S_1$ to make the vertices touch. Again by trilateral symmetry, to each of these edges corresponds a range of shrinking segments filling the space until the next vertex. \marginnote{This is actually exploited in data visualization to represent objects that have three ingredients (like the NPK - nitrogen, phosphorus, potassium - composition of soils)}``Forgetting'' any one of these three coordinates (which is really predetermined by the rest), we project a triangle in one of the three planes that intersect at the origin. This triangle must be equilateral, since all edges are unit-length.
+\subsection{Standard n-simplices revisited}
+Generalizing the reasoning above, the standard $n$-simplex defined in expression (\ref{standard-sn}) can be rewritten as:
 
-Once again, this can be seen as the union
 
 \begin{equation}
-  S_n =  \bigcup_{\alpha \in [0,1]} \{x_1+\cdots+x_n = 1-\alpha\ |\ x_1,\ldots,x_n>0\},
+    S_n = \bigcup_{\alpha\in[0,1]} \{(x_1,\cdots,x_n,\alpha) | \ \{(x_1,\cdots,x_n)\in (1-\alpha)*S_{n-1}  \}
+\label{union-sn}
 \end{equation}
-and since each element is a scaled $(n-1)$-simplex, this is again equivalent to 
-\begin{equation}
-    S_n = \bigcup_{\alpha\in[0,1]} \{(x_1,\cdots,x_n,\alpha) | \ \{(x_1,\cdots,x_n,\alpha)\in (1-\alpha)*S_{n-1}  \}
-\end{equation}
+where $c*S_{n-1}$ is the set of $n$ positive reals that sum to $c$ (i.e. a ``scaled'' version of $S_{n-1}$).
 \begin{exercise}
-What does a $3$-simplex look like?
+Show inductively that definitions (\ref{standard-sn}) and (\ref{union-sn}) are equivalent.
+\end{exercise}
+\begin{exercise}
+What is $c*S_2$, geometrically? What does a $3$-simplex look like?
 \end{exercise}
 \subsection{General $n$-simplices}
 For additional generality we can let simplices lie anywhere in real $n$-space as follows:
@@ -103,7 +109,7 @@ For additional generality we can let simplices lie anywhere in real $n$-space as
 where $u_1,\ldots,u_{n+1}$ are linearly independent vectors. 
 
 \begin{exercise}
-Show that standard simplices are simplices in this more general sense.
+Show that standard simplices are simplices in this more general sense. Hint: somehow rewrite the sum in (\ref{geometric-simplex}) in terms of vectors and matrix.
 \end{exercise}
 \begin{exercise}
 Can the standard $S_n$ be recovered from any $S_n(u_1,\cdots,u_{n+1})$? How?
@@ -129,41 +135,71 @@ Can the standard $S_n$ be recovered from any $S_n(u_1,\cdots,u_{n+1})$? How?
  
 \section{Simplicial complexes}
 \subsection{Abstract simplices}
-\newcommand{\se}{\mathcal S}
+\newcommand{\se}{\mathcal X}
 \renewcommand{\sc}{\mathcal C}
-Let $\ve$ be a finite set. The elements of $\ve$ are called \define{vertices}. An abstract $k$-simplex is a subset of $\ve$ with $k+1$ elements. For example, $\ve$ is a set of people, 1-simplices can represent couples while 2-simplices represent three-person cliques. ($0$-simplices are one-element sets that we will also call vertices.)
+Let $\ve$ be a finite set. The elements of $\ve$ are called \define{vertices}. An abstract $k$-simplex $\se$ is a subset of $\ve$ with $k+1$ elements. For example, $\ve$ is a set of people, 1-simplices can represent couples while 2-simplices represent three-person cliques. ($0$-simplices are one-element sets that we will also call vertices.)
+
+Since $\ve$ is finite, its elements can be bijectively identified with the natural numbers $\{1,2,\cdots,\}$. For short, we can further write a 1-simplex $\{1,2}\}$ as $[12]$, and generally a $k$-simplex $\{u,v,w,\ldots,z\}$ as $[uvw\ldots z]$ 
 
 \begin{exercise}
 What must $\ve$ be so that simplices in real space correspond to abstract simplices?
 \end{exercise}
 
-A simplicial complex (SC)  is a set of abstract simplices $\sc=\{\se_1,\cdots\}$ such that if a simplex $\se$ is in $\sc$, then all subsets of $\se$ are also in $\sc$. 
+A simplicial complex (SC)  is a set of abstract simplices $\sc=\{\se_1,\se_2,\ldots\}$ such that if a simplex $\se$ is in $\sc$, then all subsets of $\se$ are also in $\sc$.
+
 \subsection{Graphs}
-A simplicial complex $\sc$ whose elements are all $0$- or $1$-simplices is called a \define{graph}.\marginnote{The whole goal of Section 1 was to build the intuition that simplices are $n$-dimensional triangles; however, we need to let go of the idea that these sets are embedded in a higher-dimensional ``space''. Instead, we're \emph{building} ``spaces'' by gluing simplices.} The idea is here is that if $\se_{12}=\{\se_1,\se_2\}$ is a line segment in $\sc$, then its ``endpoints'' $\se_1$ and $\se_2$ must also be in $\sc$. 
+The following is not standard in classic treatments, but let $$\text{dim}\ \sc := \max_{\se \in \sc} |\se|$$
+(where $|X|$ is the number of elements in a finite set $X$).
+
+A SC $\sc$ with $\dim \sc = 1$ is a \define{graph}.\marginnote{The whole goal of Section 1 was to build the intuition of how exactly simplices are $n$-dimensional triangles; however, we need to let go of the idea that these sets are embedded in a higher-dimensional ``space''. Instead, we're \emph{building} ``spaces'' by gluing simplices.} The idea is here is that if $[uv]$ is a line segment in $\sc$, then its ``endpoints'' $u$ and $v$ must also be in $\sc$ (due to how a SC is defined). 
 \begin{exercise}
 In the ordinary sense, a graph is a set $(\ve,\mathcal E)$ where $\mathcal E$ is a subset of $\ve\times \ve$ (a set of pairs of vertices). Are these definitions compatible?
 \end{exercise}
-\subsection{Higher simplicial complexes}
+\subsection{Simplicial complexes with mixed-dimension simplices}
 Simplicial complexes may have elements with different dimensionality. A graph, for example, has elements with dimension 0 (vertices, which may or not be connected) and 1 (edges, in graph terminology). Note, in this vein, that the following SCs are different
 \begin{align*}
-    \sc_1 &= \{\se_1,\se_2,\se_3,\{\se_1,\se_2\},\{\se_1,\se_3\},\{\se_2,\se_3\}\}\\
-    \sc_2 &= \{\se_1,\se_2,\se_3,\{\se_1,\se_2\},\{\se_1,\se_3\},\{\se_2,\se_3\},\{\se_1,\se_2,\se_3\}\}
+    \sc_1 &= \{1,2,3,[12],[13],[23]\}\\
+    \sc_2 &= \{1,2,3,[12],[13],[23],[123]\}
 \end{align*}
 
-The SC $\sc_1$ is a graph with three points and three edges that, if realized in $\re^2$ (by making each $1$-simplex the line segment that interpolates between its vertices) would correspond to a triangular outlines. Meanwhile, $\sc_2$ has every element of $\sc_1$ in addition to the ``filled triangle'' $\se_{123}$ spanned  by the vertices $\se_1,\se_2,\se_3$. Note also that by definition the following
+$\sc_1$ is a graph with three points and three edges that, if realized in $\re^2$ (by making each $1$-simplex the line segment that interpolates between its vertices) would draw triangular outlines. Meanwhile, $\sc_2$ has every element of $\sc_1$ in addition to the ``filled triangle'' $[123]$. Note also that by definition the following
 
 \begin{align*}
-    \bar{C}_1 &= \{\se_1,\se_2,\se_3,\{\se_1,\se_2,\se_3\}\}\\
-    \bar{C}_2 &= \{\{\se_1,\se_2\},\{\se_1,\se_3\},\{\se_2,\se_3\},\{\se_1,\se_2,\se_3\}\}
+    X_1 &= \{1,2,3,[123]\}\\
+    X_2 &= \{[12],[13],[123]\}
 \end{align*}
-are not simplicial complexes: if a SC has a triangle, it must have its edges, and if it must have edges ($1$-simplices) at all it must have all of its vertices. This is true by the definition of an SC, but also approaches the useful geometric intuition that whenever a $k$-simplex $\se$ is in a SC, its ``geometric boundaries'' (a set of $(k-1)$-simplices with $k+1$ elements) must also be in the SC. These $(k-1)$-simplices, called \define{faces}, are obtained by deleting one vertex from the original $k$-simplex: therefore
+are not simplicial complexes: if a SC has a triangle, it must have its edges, and if it must have edges ($1$-simplices) at all it must have all of its vertices. This is true by the definition of an SC, but also approaches the useful geometric intuition that whenever a $k$-simplex $\se$ is in a SC, its ``geometric boundaries'' (a set of $(k-1)$-simplices with $k+1$ elements) must also be in the SC. Such simplices, called \define{faces}, are obtained by deleting one vertex from the original $k$-simplex: therefore
 \[
-\{\se_1,\se_2\},\{\se_1,\se_3\},\{\se_2,\se_3\}
+[12],[13],[23]
 \]
-are the three $1$-simplices that are faces of the $2$-simplex $\{\se_1,\se_2,\se_3\}$
+are the three $1$-simplices that are faces of the $2$-simplex $[123]$
 \begin{exercise}
-Consider the set $\mathcal X$ that has one $k$-simplex, its faces, the faces of its faces and so on (the faces of 0-simplices are all identically the empty set, so this is finite). Is this a SC? Is there a SC that has the $k$-simplex and fewer elements?
+Consider the set $\mathcal X$ that has one $k$-simplex, its faces, the faces of its faces and so on (the faces of vertices are all identically the empty set, so this is finite). Is this a SC? Is there a SC that has the $k$-simplex and fewer elements?
 \end{exercise}
+
+A dual concept is that of \define{cofaces}. Whereas faces are defined for simplices in isolation, a coface of a simplex $\se$ is a simplex $\se'$ that has $\se$ as a face. This implies an ambient universe of possible simplices where we can look for one with this property; simplicial complexes are the natural candidate, since the faces of any simplex $\se'\in \sc$ must also belong to $\sc$. 
+
+For example, $[12]$ and $[13]$ are faces of $[123]$. This corresponds to the geometric intuition that these edges form the outlines of a $2$-simplex.
+
+
+
+\subsection{Adjacency}
+
+It was briefly suggested that SCs were spaces built by gluing simplices. I will now try to make this a better-defined idea.
+
+In some applications, graphs are defined as \define{incidence structures} on a vertex set $\ve$. What this means is that whenever $1$ and $2$ are faces of some edge $[12]$, the vertices 1 and 2 are said to be ``incident'' in some semantically meaningful fashion. An incidence matrix that takes incidence relationships (edges or $1$-simplices) to their component vertices. This is a map that takes the edges in a SC to their faces.
+
+Perhaps more commonly, graphs are also seen as \define{adjacency structures}. In graph theory,  adjacency and incidence structures are derived from each other, but for abstract simplices the idea of adjacency starts with the vertices and asks whether they have common cofaces. A function that detects this is
+\[
+\delta_{uv}=\mathbb{1}_{[uv]\in\sc}
+\]
+and an adjacency matrix $A$ can be built with elements $\delta_{\text{row},\text{column}}$. This can be extended to SCs with simplices of mixed dimension. 
+
+Namely, two simplices of $\sc$ are said to be \define{upper adjacent} if they have a common coface and \define{lower adjacent} if they have a common face. This is the precise way in which two vertices can be said to be (upper) adjacent in the ordinary graph (if they're faces of a common edge) sense, and two edges can be said to be lower adjacent if they have a vertex in common.
+
+In this way, we can arrange simplices (vertices, edges, triangles, tetrahedrons) in such a way that it makes sense that edges are joined at a vertex, or, maybe, tetrahedrons are joined by one point, edge or triangle. 
+\section{Orientation}
+\section{Boundary maps}
 \section{Homology, cohomology}
 
 \section{Connections with Hodge theory}
