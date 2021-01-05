@@ -148,27 +148,38 @@ What must $\ve$ be so that simplices in real space correspond to abstract simpli
 A simplicial complex (SC)  is a set of abstract simplices $\sc=\{\se_1,\se_2,\ldots\}$ such that if a simplex $\se$ is in $\sc$, then all subsets of $\se$ are also in $\sc$.
 
 \subsection{Graphs}
-The following is not standard in classic treatments, but let $$\text{dim}\ \sc := \max_{\se \in \sc} |\se|$$
+\newcommand{\maxdim}{\mathrm{max }\dim}
+The following is not standard in classic treatments, but let $$\maxdim\ \sc := \max_{\se \in \sc} |\se|$$
 (where $|X|$ is the number of elements in a finite set $X$).
 
-A SC $\sc$ with $\dim \sc = 1$ is a \define{graph}.\marginnote{The whole goal of Section 1 was to build the intuition of how exactly simplices are $n$-dimensional triangles; however, we need to let go of the idea that these sets are embedded in a higher-dimensional ``space''. Instead, we're \emph{building} ``spaces'' by gluing simplices.} The idea is here is that if $[uv]$ is a line segment in $\sc$, then its ``endpoints'' $u$ and $v$ must also be in $\sc$ (due to how a SC is defined). 
+A SC $\sc$ with $\maxdim \sc = 1$ is a \define{graph}.\marginnote{The whole goal of Section 1 was to build the intuition of how exactly simplices are $n$-dimensional triangles; however, we need to let go of the idea that these sets are embedded in a higher-dimensional ``space''. Instead, we're \emph{building} ``spaces'' by gluing simplices.} The idea is here is that if $[uv]$ is a line segment in $\sc$, then its ``endpoints'' $u$ and $v$ must also be in $\sc$ (due to how a SC is defined). 
 \begin{exercise}
 In the ordinary sense, a graph is a set $(\ve,\mathcal E)$ where $\mathcal E$ is a subset of $\ve\times \ve$ (a set of pairs of vertices). Are these definitions compatible?
 \end{exercise}
-\subsection{Simplicial complexes with mixed-dimension simplices}
+\subsection{The clique complex}
 Simplicial complexes may have elements with different dimensionality. A graph, for example, has elements with dimension 0 (vertices, which may or not be connected) and 1 (edges, in graph terminology). Note, in this vein, that the following SCs are different
 \begin{align*}
     \sc_1 &= \{1,2,3,[12],[13],[23]\}\\
     \sc_2 &= \{1,2,3,[12],[13],[23],[123]\}
 \end{align*}
+despite being somewhat related: $\sc_1$ is a graph with three points and three edges that, if realized in $\re^2$ (by making each $1$-simplex the line segment that interpolates between its vertices) would suggest a triangular outlines -- while in contrast, $\sc_2$ has every element of $\sc_1$ in addition to the ``filled triangle'' $[123]$. 
 
-$\sc_1$ is a graph with three points and three edges that, if realized in $\re^2$ (by making each $1$-simplex the line segment that interpolates between its vertices) would draw triangular outlines. Meanwhile, $\sc_2$ has every element of $\sc_1$ in addition to the ``filled triangle'' $[123]$. Note also that by definition the following
+This idea can be formalized (without handwaving invocations of geometric realizations) by the \textsc{clique complex}. In graph theory, a \textsc{clique} is a complete subgraph: a subset of a graph such that all of the vertices are connected. 
 
+More exhaustively,  let  $\mathcal V$ be a set of vertices: its ``clique graph''\sidenote{More commonly called the ``complete'' graph} $(\mathcal V, \mathcal E)$is obtained by attaching an edge set $\mathcal E$ containing all distinct pairs $\{u,v)\ | u\in \mathcal V, v \in \mathcal V, u\neq v\}$. A clique of a graph $(\mathcal G, \mathcal E)$ is simply a subgraph\sidenote{A subgraph is $(V',E'), V'\subset \mathcal V$ with  E'\subset \mathcal E$} that is the clique graph of its vertices $V'$. 
+
+While a clique graph is built from vertices, the clique complex is a SC built from a graph: besides the 0- (vertices) and 1-(simplices) present in the original graph, a higher-dimensional simplex is added for each clique. For example, if $\sc_1$ is seen as a graph, then the $\{[12],[23],[13]\}$ is a clique (all pairs of the vertices seen are present); therefore, we add the 2-simplex $[123]$. 
+
+
+\section{Faces and cofaces}
+The following set of simplices
 \begin{align*}
     X_1 &= \{1,2,3,[123]\}\\
-    X_2 &= \{[12],[13],[123]\}
 \end{align*}
-are not simplicial complexes: if a SC has a triangle, it must have its edges, and if it must have edges ($1$-simplices) at all it must have all of its vertices. This is true by the definition of an SC, but also approaches the useful geometric intuition that whenever a $k$-simplex $\se$ is in a SC, its ``geometric boundaries'' (a set of $(k-1)$-simplices with $k+1$ elements) must also be in the SC. Such simplices, called \define{faces}, are obtained by deleting one vertex from the original $k$-simplex: therefore
+is, by defintion, not a simplicial complex since $X_1 \ni [12]\subset [123]\not \in X_1$. That is,
+if a SC has a ``triangle''', it must have its edges, and if it must have edges ($1$-simplices) at all it must have all of its vertices. This is the geometric intuition for the abstract definition of a SC:  whenever a $k$-simplex $\se$ is in a SC, its ``geometric boundaries'' (a set of $(k-1)$-simplices with $k+1$ elements) must also be in the SC. 
+
+More thoroughly, a simplex is called a \define{face} when it can be obtained obtained by deleting one vertex from another $k$-simplex: therefore
 \[
 [12],[13],[23]
 \]
