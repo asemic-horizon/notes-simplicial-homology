@@ -1,6 +1,7 @@
 \documentclass{tufte-handout}
 \setcounter{secnumdepth}{1}
 \usepackage{amsmath}
+\usepackage{natbib}
 \newtheorem{app}{Application}
 \newtheorem{example}{Example}
 \newtheorem{exercise}{Exercise}
@@ -175,10 +176,13 @@ The following set of simplices
 \begin{align*}
     X_1 &= \{1,2,3,[123]\}\\
 \end{align*}
-is, by defintion, not a simplicial complex since $X_1 \ni [12]\subset [123]\not \in X_1$. That is,
+is, by defintion, \textbf{not} a simplicial complex since $X_1 \ni [12]\subset [123]\not \in X_1$. That is,
 if a SC has a ``triangle''', it must have its edges, and if it must have edges ($1$-simplices) at all it must have all of its vertices. This is the geometric intuition for the abstract definition of a SC:  whenever a $k$-simplex $\se$ is in a SC, its ``geometric boundaries'' (a set of $(k-1)$-simplices with $k+1$ elements) must also be in the SC. 
 
-More thoroughly, a simplex is called a \define{face} when it can be obtained obtained by deleting one vertex from another $k$-simplex: therefore
+More thoroughly, a simplex is called a \define{face}\sidenote{
+There seems to be some equivocation in the literature about this terminology. I'm following the usage in Schaub et al., but for Frohmader it seems that a ``face'' is \emph{any} subset of a simplex -- therefore $1,2,3$ would be faces of $[123]$; meanwhile, Schaub and I call a ``face'' would be, in his language, a ``facet''. Cf.  \cite{schaub2020random}
+
+\cite{frohmader2008face}} 
 \[
 [12],[13],[23]
 \]
@@ -199,18 +203,31 @@ Can the clique complex be defined in terms of cofaces?
 
 It was briefly suggested that SCs were spaces built by gluing simplices. I will now try to make this a better-defined idea.
 
-In some applications, graphs are defined as \define{incidence structures} on a vertex set $\ve$. What this means is that whenever $1$ and $2$ are faces of some edge $[12]$, the vertices 1 and 2 are said to be ``incident'' in some semantically meaningful fashion. An incidence matrix that takes incidence relationships (edges or $1$-simplices) to their component vertices. This is a map that takes the edges in a SC to their faces.
+In some applications, graphs are defined as \define{incidence structures} on an edge set $\mathcal E$. What this means is that edges $[ij],[ik]$ are said to be ``incident'' (in some semantically meaningful fashion, such as pressure flow problems) whenever they share a vertex $i$. An incidence matrix $\mathcal I$ is, then, a linear transform $\mathcal E\to \ve$ that takes an edge to the vertices it connects.
 
-Perhaps more commonly, graphs are also seen as \define{adjacency structures}. In graph theory,  adjacency and incidence structures are derived from each other, but for abstract simplices the idea of adjacency starts with the vertices and asks whether they have common cofaces. A function that detects this is
-\[
-\delta_{uv}=\mathbb{1}_{[uv]\in\sc}
-\]
-and an adjacency matrix $A$ can be built with elements $\delta_{\text{row},\text{column}}$. This can be extended to SCs with simplices of mixed dimension. 
+Perhaps more commonly, graphs are also seen as \define{adjacency structures} on vertices. An adjacency matrix $\mathcal A$ is then a linear transform $\ve\to \ve$s which takes vertices to the vertices to which they're adjacent (or connected). 
 
-Namely, two simplices of $\sc$ are said to be \define{upper adjacent} if they have a common coface and \define{lower adjacent} if they have a common face. This is the precise way in which two vertices can be said to be (upper) adjacent in the ordinary graph (if they're faces of a common edge) sense, and two edges can be said to be lower adjacent if they have a vertex in common.
+
+In the general case for SCs, two simplices of $\sc$ are said to be \define{upper adjacent} if they have a common coface and \define{lower adjacent} if they have a common face. This is the precise way in which two vertices can be said to be (upper) adjacent in the ordinary graph (if they're faces of a common edge) sense, and two edges can be said to be lower adjacent (or incident) if they have a vertex in common.
 
 In this way, we can arrange simplices (vertices, edges, triangles, tetrahedrons) in such a way that it makes sense that edges are joined at a vertex, or, maybe, tetrahedrons are joined by one point, edge or triangle. 
 \section{Orientation}
+
+So far, every time I brought up graphs as an example of SCs, we've been implicitly using \emph{undirected graphs}, that is, graphs where the edge set can be exactly identified with a subset of $ve\times ve$. In applications, graphs are sometimes directed or even edge-weighted to represent directionality and quantitative flow. 
+
+A directed (unweighted) graph can be defined as a pair $(\ve, \mathcal E)$ where $\mathcal E \subseteq \{-1,1\}\times V\times V$. This means that there can be two different edges between vertices $1,2$: one with negative sign, that we could identify with an \emph{ordering} of vertices like $(21)$ and another with a positive sign, identifiable with  $(12)$.
+
+This becomes slightly more confusing in the case of 2-simplices (``triangles'') too: an arbitrary $\se=[ijk]$ has $3!$ possible orderings
+\begin{align*}
+(ijk),(ikj),(kij),(kji),(jik),(jki).
+\end{align}*
+
+but there are reasons to understand $(ijk)$ and $(kij)$ to have the same \define{orientation}. Imagine a walker that follows $(ijk)$ from vertex to vertex endlessly: its path will be $ijkijkijk\ldots$; the entire corresponding path for $(kji)$ is in there. Meanwhile, $(ijk)$ and $(jik)$ are different: they point to opposite directions along the loop. Alternatively: if you actually draw a triangle, label its vertices $i,j,k$ and place arrows $i\to j\to k$, the same will become clear.
+
+We'll formalize\marginnote{The standard explanation of this is combinatoric: two orderings are equivalent if they differ by an even permutation. That's more economical and probably more rigorous, but assumes yet another prerequisite} this by saying that orderings $\to_1, \to_2$ are \define{equivalent} ($\to_1 \approx \to_2$) if the infinite iteration of $\to_1$ ($u\to_1 v\to_1 w\to z\to_1...$) is a subsequence of the infinite iteration of $\to_2$
+\begin{exercise}
+Show that two orderings that are equivalent by the above definition differ by an even permutation.
+\end{exercise}
 \section{Boundary maps}
 \section{Homology, cohomology}
 
