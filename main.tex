@@ -13,6 +13,8 @@
 \usepackage{fancyvrb}\fvset{fontsize=\normalsize}
 \usepackage{multicol}
 \usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{patterns}
 \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
 \graphicspath{{graphics/}}
 
@@ -59,7 +61,9 @@ Note that from expression (\ref{standard-s1}) and the fact that $x_1,x_2$ are al
 \end{equation}
 This definition makes it clearer that, despite being originally identified as a pair of numbers in the unit interval, $S_1$ is actually tiny 1-dimensional subset of $[0,1]\times[0,1]$ which can be bijectively identified with the unit interval $[0,1]$. 
 
-Note that the symmetry in $x_1+x_2=1$ means we could have swapped the order (or labels) of summands, taking unions over pairs like $(\alpha,x_2)$ would yield the same set. Visually we can imagine an animation that sweeps the vertical axis and records the points where $x=1-y$, or one that sweeps over the horizontal axis and records the points where $y=1-x$.\marginnote{This is overthinking for the 1-simplex but helps me see the 2- and especially the 3-simplex.}
+Note that the symmetry in $x_1+x_2=1$ means we could have swapped the order (or labels) of summands, taking unions over pairs like $(\alpha,x_2)$ would yield the same set. Visually we can imagine an animation that sweeps the vertical axis and records the points where $x=1-y$, or one that sweeps over the horizontal axis and records the points where $y=1-x$.\marginnote{This is overthinking for the 1-simplex but helps me see the 2- and especially the 3-simplex.
+\input{s0.tex}
+}
 
 Note, finally, that the issue of length is more or less arbitrary: we could easily define scaled $1$-simplices corresponding to line segments of length $c>0$: 
 {\[
@@ -114,25 +118,7 @@ Show that standard simplices are simplices in this more general sense. Hint: som
 \begin{exercise}
 Can the standard $S_n$ be recovered from any $S_n(u_1,\cdots,u_{n+1})$? How?
 \end{exercise}
-% The standard simplices are, of course, general simplices whose vertices are the canonical base vectors $e_1=(1,0,\cdots),e_2=(0,1,0,\cdots),\ldots$. This is easier to see if we let $\Theta=(\theta_i), U = (u_{i,.})$  be a vector of coefficients ans a matrix of vertices as columns so that
 
-% \begin{equation}
-%     U\Theta= 1
-% \end{equation}
-% In the case where $U$ is identity matrix (with $(e_i)$ as columns), this is clearly true and $\theta_1,\cdots$ take the role $x_1, \cdots$ had previously. Therefore $U$ is a transform that deforms standard simplices and $U^{-1}$ recovers them.
-% As noted, standard simplices naturally represent data about composition (how much of a cake is saturated fats and sugars and so on). They can also represent the space of possible discrete probability distributions with $n$ outcomes: a binary random variable like a (possibly rigged) coin toss is usually specified by a single value $\text{Prob}(\text{heads})$, but this is because $\text{Prob}(\text{heads})+\text{Prob}(\text{tails})=1$. In other words, the space of all possible (in the general case rigged) coins\sidenote{A coin is a random variable.} is just $S_2$. 
-
-% \begin{app}{Dirichlet priors} -- A particular coin (one that you can find in your trouser pockets) is an element of the 2-simplex $S_2$. The natural Bayesian prior in this case is the Beta distribution, which takes values in $[0,1]=S_2$. More generally, the Dirichlet distribution is the prior distribution for a discrete random variable with arbitary $n$ outcomes. The range of possible values for such a Dirichlet is the $n$-simplex; in other words, sampling from this distribution generates points in the $n$-simplex.
-% \end{app}
-% \begin{app}{Aitchison geometry} -- Simplices are not vector spaces under Euclidean geometry: $u=(0.8,0.1,0.1), v = (0.6,0.2,0.2)$ are both elements of $S_3$, but $u+v$ is not. But the standard operations $+,\cdot$ can be replaced by alternate $\oplus,\odot$ so that the vector space laws apply:
-% \[
-% x\oplus y = \begin{bmatrix}{x_1 y_1}/{\sum x_i y_i} & \cdots & {x_n y_n}/{\sum x_i y_i}\end{bmatrix}
-% \]
-% \[
-% \alpha \odot x = \begin{bmatrix}{x_1^\alpha}/{\sum x_i^\alpha} & \cdots & {x_n^\alpha}/{\sum x_i^\alpha} \end{bmatrix}
-% \]
-% \end{app}
- 
 \section{Simplicial complexes}
 \subsection{Abstract simplices}
 \newcommand{\se}{\mathcal X}
@@ -142,11 +128,11 @@ Let $\ve$ be a finite set. The elements of $\ve$ are called \define{vertices}. A
 Since $\ve$ is finite, its elements can be bijectively identified with the natural numbers $\{1,2,\cdots,\}$. For visual clarity when reading, we can further write a 1-simplex $\{1,2}\}$ as $[12]$, and generally a $k$-simplex $\{u,v,w,\ldots,z\}$ as $[uvw\ldots z]$ 
 
 \begin{exercise}
-What must $\ve$ be so that simplices in real space correspond to abstract simplices?
+What must $\ve$ be so that abstract simplices are simplices in real space?
 \end{exercise}
 
 A simplicial complex (SC)  is a set of abstract simplices $\sc=\{\se_1,\se_2,\ldots\}$ such that if a simplex $\se$ is in $\sc$, then all subsets of $\se$ are also in $\sc$.
-
+\input{figx.tex}
 \subsection{Graphs}
 \newcommand{\maxdim}{\mathrm{max }\dim}
 The following definition is not standard in classic treatments, but let $$\maxdim\ \sc := \max_{\se \in \sc} |\se|$$
@@ -166,7 +152,7 @@ despite being somewhat related: $\sc_1$ is a graph with three points and three e
 
 This idea can be formalized (without handwaving invocations of geometric realizations) by the \textsc{clique complex}. In graph theory, a \textsc{clique} is a complete subgraph: a subset of a graph such that all of the vertices are connected. 
 
-More exhaustively,  let  $\mathcal V$ be a set of vertices: its ``clique graph''\sidenote{More commonly called the ``complete'' graph} $(\mathcal V, \mathcal E)$is obtained by attaching an edge set $\mathcal E$ containing all distinct pairs $\{u,v)\ | u\in \mathcal V, v \in \mathcal V, u\neq v\}$. A clique of a graph $(\mathcal G, \mathcal E)$ is simply a subgraph\sidenote{A subgraph is $(V',E'), V'\subset \mathcal V$ with  $E'\subset \mathcal E$} that is the clique graph of its vertices $V'$. 
+More exhaustively,  let  $\mathcal V$ be a set of vertices: its ``clique graph''\sidenote{More commonly called the ``complete'' graph} $(\mathcal V, \mathcal E)$ is obtained by attaching an edge set $\mathcal E$ containing all distinct pairs $\{u,v)\ | u\in \mathcal V, v \in \mathcal V, u\neq v\}$. A clique of a graph $(\mathcal G, \mathcal E)$ is simply a subgraph\sidenote{A subgraph is $(V',E'), V'\subset \mathcal V$ with  $E'\subset \mathcal E$} that is the clique graph of its vertices $V'$. 
 
 While a clique graph is built from vertices, the clique complex is a SC built from a graph: besides the 0- (vertices) and 1-(simplices) present in the original graph, a higher-dimensional simplex is added for each clique. For example, if $\sc_1$ is seen as a graph, then  $\{[12],[23],[13]\}$ is a clique (all pairs of the vertices seen are present); therefore, we add the 2-simplex $[123]$. 
 
@@ -212,26 +198,34 @@ In the general case for SCs, two simplices of $\sc$ are said to be \define{upper
 
 In this way, we can arrange simplices (vertices, edges, triangles, tetrahedrons) in such a way that it makes sense that edges are joined at a vertex, or, maybe, tetrahedrons are joined by one point, edge or triangle. 
 \section{Orientation}
-
+\subsection{Orientation in graphs}
 So far, every time I brought up graphs as an example of SCs, we've been implicitly using \emph{undirected graphs}, that is, graphs where the edge set can be exactly identified with a subset of $ve\times ve$. In applications, graphs are sometimes directed or even edge-weighted to represent directionality and quantitative flow. 
 
 A directed (unweighted) graph can be defined as a pair $(\ve, \mathcal E)$ where $\mathcal E \subseteq \{-1,1\}\times V\times V$. This means that there can be two different edges between vertices $1,2$: one with negative sign, that we could identify with an \emph{ordering} of vertices like $(21)$ and another with a positive sign, identifiable with  $(12)$.
-
+\subsection{Orientation in 2-simplices}
 This becomes slightly more confusing in the case of 2-simplices (``triangles'') too: an arbitrary $\se=[ijk]$ has $3!$ possible orderings
 \begin{align*}
 (ijk),(ikj),(kij),(kji),(jik),(jki).
-\end{align}*
+\end{align}
 
-but there are reasons to understand $(ijk)$ and $(kij)$ to have the same \define{orientation}. Imagine a walker that follows $(ijk)$ from vertex to vertex endlessly: its path will be $ijkijkijk\ldots$; the entire corresponding path for $(kji)$ is in there. Meanwhile, $(ijk)$ and $(jik)$ are different: they point to opposite directions along the loop. Alternatively: if you actually draw a triangle, label its vertices $i,j,k$ and place arrows $i\to j\to k$, the same will become clear.
+but there are reasons to understand $(ijk)$ and $(kij)$ to have the same \define{orientation}. Imagine a walker that follows $(ijk)$ from vertex to vertex endlessly: its path will be the sequence $ijkijkijk\ldots$. Notice that the entire corresponding path for $(kji)$ is contained in the path for $(ijk)$  there. Meanwhile, $(ijk)$ and $(jik)$ are different: they point to opposite directions along the loop. 
 
-We'll formalize\marginnote{The standard explanation of this is combinatoric: two orderings are equivalent if they differ by an even permutation. That's more economical and probably more rigorous, but assumes yet another prerequisite} this by saying that orderings $\to_1, \to_2$ are \define{equivalent} ($\to_1 \approx \to_2$) if the infinite iteration of $\to_1$ ($u\to_1 v\to_1 w\to z\to_1...$) is a subsequence of the infinite iteration of $\to_2$
-\begin{exercise}
-Show that two orderings that are equivalent by the above definition differ by an even permutation.
-\end{exercise}
-\section{Boundary maps}
-\section{Homology, cohomology}
 
-\section{Connections with Hodge theory}
+
+Alternatively: if you actually draw a triangle, label its vertices $i,j,k$ and place arrows $i\to j\to k$, the same will become clear.
+\section{Chain complexes}
+A vector \define{chain complex}\sidenote{}
+is a pair
+\[
+\left(\{V_i\ | i\in\mathbb Z\}, \right \{\phi_i\colon V_i \to V_{i-1}\ |\ i \in \mathbb Z\})
+\]
+where $V_i$ are vector spaces and $\phi_i \circ \phi_{i+1} = 0$ (the constant zero map $x \mapsto 0$), i.e.
+\[
+\cdots \xrightarrow{\phi_2} V_2 \xrightarrow{\phi_1} V_1\xrightarrow{\phi_0} V_0 \xrightarrow{\phi_{-1}} \cdots 
+\]
+
+In topology, the maps $\phi_i$ often have the interpretation of boundary operators, in which case they're also commonly written as $\partial_i$.
+
 \nocite{*}
 \bibliography{refs}
 \bibliographystyle{siam}
